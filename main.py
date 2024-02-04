@@ -23,28 +23,31 @@ class LatLng:
 
     def __str__(self) -> str:
         return f'{self.lat:.04f}N,{self.lng:.04f}E'
-    
+
     def distance(self, other: 'LatLng') -> float:
         lat1, lng1 = self.tuple
         lat2, lng2 = other.tuple
-        
+
         R = 6371.0
-        
+
         lat1_rad = math.radians(lat1)
         lng1_rad = math.radians(lng1)
         lat2_rad = math.radians(lat2)
         lng2_rad = math.radians(lng2)
-        
+
         dlat = lat2_rad - lat1_rad
         dlng = lng2_rad - lng1_rad
-        
-        a = math.sin(dlat / 2)**2 + math.cos(lat1_rad) * math.cos(lat2_rad) * math.sin(dlng / 2)**2
+
+        a = (
+            math.sin(dlat / 2) ** 2
+            + math.cos(lat1_rad)
+            * math.cos(lat2_rad)
+            * math.sin(dlng / 2) ** 2
+        )
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-        
-        distance = R * c    
+
+        distance = R * c
         return distance
-
-
 
     @cached_property
     def url_google_maps_place(self) -> str:
@@ -81,6 +84,7 @@ class LatLng:
         for i in range(len(latlng_list) - 1):
             distance += latlng_list[i].distance(latlng_list[i + 1])
         return distance
+
 
 @dataclass
 class Angle:
@@ -136,6 +140,7 @@ def generate_path(seed: int):
     webbrowser.open(LatLng.url_google_maps_directions(latlng_list))
     crow_distance = LatLng.route_distance(latlng_list)
     log.info(f'{crow_distance=:.1f}km')
+
 
 if __name__ == '__main__':
     seed = sys.argv[1]
