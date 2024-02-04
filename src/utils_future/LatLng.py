@@ -52,7 +52,7 @@ class LatLng:
     @cached_property
     def url_google_maps_place(self) -> str:
         return f'https://www.google.com/maps/place/{self}'
-    
+
     @cached_property
     def url_google_maps_street_view(self) -> str:
         lat, lng = self.tuple
